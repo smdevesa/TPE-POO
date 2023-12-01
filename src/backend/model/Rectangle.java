@@ -17,6 +17,11 @@ public class Rectangle implements Figure {
         return bottomRight;
     }
 
+    public void move(double diffX, double diffY){
+        topLeft.move(diffX, diffY);
+        bottomRight.move(diffX, diffY);
+    }
+
     @Override
     public String toString() {
         return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
