@@ -17,14 +17,6 @@ public class Point {
         return y;
     }
 
-    public void setX(double x){
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
     public void move(double dX, double dY){
         x += dX;
         y += dY;
