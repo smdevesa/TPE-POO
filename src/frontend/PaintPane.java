@@ -82,36 +82,43 @@ public class PaintPane extends BorderPane {
 
 		canvas.setOnMouseReleased(event -> {
 			if(imaginaryRectangle != null) {
+				for(Figure figure : canvasState.figures()){
+					if(figure.isInRectangle(imaginaryRectangle)){
+						selectedFigures.add(figure);
+					}
+				}
 				canvasState.deleteFigure(imaginaryRectangle);
+				imaginaryRectangle = null;
 			}
-			Point endPoint = new Point(event.getX(), event.getY());
-			if(startPoint == null) {
-				return ;
+			else {
+				Point endPoint = new Point(event.getX(), event.getY());
+				if (startPoint == null) {
+					return;
+				}
+				if (endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
+					return;
+				}
+				Figure newFigure = null;
+				if (rectangleButton.isSelected()) {
+					newFigure = new DrawableRectangle(startPoint, endPoint);
+				} else if (circleButton.isSelected()) {
+					double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
+					newFigure = new DrawableCircle(startPoint, circleRadius);
+				} else if (squareButton.isSelected()) {
+					double size = Math.abs(endPoint.getX() - startPoint.getX());
+					newFigure = new DrawableSquare(startPoint, size);
+				} else if (ellipseButton.isSelected()) {
+					Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
+					double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
+					double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
+					newFigure = new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis);
+				} else {
+					return;
+				}
+				figureColorMap.put(newFigure, fillColorPicker.getValue());
+				canvasState.addFigure(newFigure);
+				startPoint = null;
 			}
-			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
-				return ;
-			}
-			Figure newFigure = null;
-			if(rectangleButton.isSelected()) {
-				newFigure = new DrawableRectangle(startPoint, endPoint);
-			}
-			else if(circleButton.isSelected()) {
-				double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
-				newFigure = new DrawableCircle(startPoint, circleRadius);
-			} else if(squareButton.isSelected()) {
-				double size = Math.abs(endPoint.getX() - startPoint.getX());
-				newFigure = new DrawableSquare(startPoint, size);
-			} else if(ellipseButton.isSelected()) {
-				Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
-				double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
-				double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
-				newFigure = new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis);
-			} else {
-				return ;
-			}
-			figureColorMap.put(newFigure, fillColorPicker.getValue());
-			canvasState.addFigure(newFigure);
-			startPoint = null;
 			redrawCanvas();
 		});
 

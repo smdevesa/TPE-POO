@@ -54,4 +54,11 @@ public class Ellipse implements Figure {
     public int hashCode() {
         return Objects.hash(centerPoint, sMayorAxis, sMinorAxis);
     }
+
+    public boolean isInRectangle(Rectangle rectangle){ //primero supongo el mayorAxis horizontal, despues del || lo supongo al revex
+        return (rectangle.getTopLeft().getX() < (centerPoint.getX() - sMayorAxis) && rectangle.getBottomRight().getX() > (centerPoint.getX() + sMayorAxis)
+                && rectangle.getTopLeft().getY() < (centerPoint.getY() - sMinorAxis) && rectangle.getBottomRight().getY() > (centerPoint.getY() + sMinorAxis))
+                || (rectangle.getTopLeft().getX() < (centerPoint.getX() - sMinorAxis) && rectangle.getBottomRight().getX() > (centerPoint.getX() + sMinorAxis)
+                && rectangle.getTopLeft().getY() < (centerPoint.getY() - sMayorAxis) && rectangle.getBottomRight().getY() > (centerPoint.getY() + sMayorAxis));
+    }
 }

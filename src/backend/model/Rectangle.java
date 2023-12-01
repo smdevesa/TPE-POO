@@ -49,4 +49,9 @@ public class Rectangle implements Figure {
     public int hashCode() {
         return Objects.hash(topLeft, bottomRight);
     }
+
+    public boolean isInRectangle(Rectangle rectangle){
+        return rectangle.getTopLeft().getX() < topLeft.getX() && rectangle.getTopLeft().getY() < topLeft.getY()
+                && rectangle.getBottomRight().getX() > bottomRight.getX() && rectangle.getBottomRight().getY() > bottomRight.getY();
+    }
 }
