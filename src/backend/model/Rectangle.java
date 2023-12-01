@@ -22,6 +22,11 @@ public class Rectangle implements Figure {
         bottomRight.move(diffX, diffY);
     }
 
+    public boolean belongs(Point point){
+        return point.getX() > topLeft.getX() && point.getX() < bottomRight.getX() &&
+                point.getY() > topLeft.getY() && point.getY() < bottomRight.getY();
+    }
+
     @Override
     public String toString() {
         return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);

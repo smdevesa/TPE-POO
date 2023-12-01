@@ -3,7 +3,7 @@ package backend.model;
 public class Circle extends Ellipse {
 
     public Circle(Point centerPoint, double radius) {
-        super(centerPoint, 2 * radius, 2 * radius);
+        super(centerPoint, radius, radius);
     }
 
     @Override
@@ -13,6 +13,11 @@ public class Circle extends Ellipse {
 
     public double getRadius() {
         return getsMayorAxis();
+    }
+
+    public boolean belongs(Point point){
+        return Math.sqrt(Math.pow(getCenterPoint().getX() - point.getX(), 2) +
+                Math.pow(getCenterPoint().getY() - point.getY(), 2)) < getRadius();
     }
 
 }
