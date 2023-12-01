@@ -14,7 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PaintPane extends BorderPane {
@@ -34,6 +36,8 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton circleButton = new ToggleButton("Círculo");
 	private final ToggleButton squareButton = new ToggleButton("Cuadrado");
 	private final ToggleButton ellipseButton = new ToggleButton("Elipse");
+	private final ToggleButton groupButton = new ToggleButton("Agrupar");
+	private final ToggleButton ungroupButton = new ToggleButton("Desagrupar");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
 	// Selector de color de relleno
@@ -43,10 +47,13 @@ public class PaintPane extends BorderPane {
 	private Point startPoint;
 
 	// Seleccionar una figura
-	private Figure selectedFigure;
+	private List<Figure> selectedFigures = new ArrayList<>();
 
 	// StatusBar
 	private final StatusPane statusPane;
+
+	// Control de rectangulo imaginario
+	private ImaginaryRectangle imaginaryRectangle;
 
 	// Colores de relleno de cada figura
 	private final Map<Figure, Color> figureColorMap = new HashMap<>();
@@ -54,7 +61,7 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
-		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton};
+		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, groupButton, ungroupButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
 			tool.setMinWidth(90);
@@ -74,6 +81,9 @@ public class PaintPane extends BorderPane {
 		});
 
 		canvas.setOnMouseReleased(event -> {
+			if(imaginaryRectangle != null) {
+				canvasState.deleteFigure(imaginaryRectangle);
+			}
 			Point endPoint = new Point(event.getX(), event.getY());
 			if(startPoint == null) {
 				return ;
@@ -124,20 +134,20 @@ public class PaintPane extends BorderPane {
 
 		canvas.setOnMouseClicked(event -> {
 			if(selectionButton.isSelected()) {
+				selectedFigures = new ArrayList<>();
 				Point eventPoint = new Point(event.getX(), event.getY());
 				boolean found = false;
 				StringBuilder label = new StringBuilder("Se seleccionó: ");
 				for (Figure figure : canvasState.figures()) {
-					if(figure.belongs(eventPoint)) {
+					if(figure.belongs(eventPoint) && selectedFigures.isEmpty()) {
 						found = true;
-						selectedFigure = figure;
-						label.append(figure.toString());
+						selectedFigures.add(figure);
+						label.append(figure);
 					}
 				}
 				if (found) {
 					statusPane.updateStatus(label.toString());
 				} else {
-					selectedFigure = null;
 					statusPane.updateStatus("Ninguna figura encontrada");
 				}
 				redrawCanvas();
@@ -146,20 +156,31 @@ public class PaintPane extends BorderPane {
 
 		canvas.setOnMouseDragged(event -> {
 			if(selectionButton.isSelected()) {
-				if(selectedFigure != null) {
-					Point eventPoint = new Point(event.getX(), event.getY());
+				Point eventPoint = new Point(event.getX(), event.getY());
+				if(!selectedFigures.isEmpty()) {
 					double diffX = (eventPoint.getX() - startPoint.getX()) / 100;
 					double diffY = (eventPoint.getY() - startPoint.getY()) / 100;
-					selectedFigure.move(diffX, diffY);
-					redrawCanvas();
+					for(Figure figure : selectedFigures) {
+						figure.move(diffX, diffY);
+					}
 				}
+				else {
+					if(imaginaryRectangle != null) {
+						canvasState.deleteFigure(imaginaryRectangle);
+					}
+					imaginaryRectangle = new ImaginaryRectangle(startPoint, eventPoint);
+					canvasState.addFigure(imaginaryRectangle);
+				}
+				redrawCanvas();
 			}
 		});
 
 		deleteButton.setOnAction(event -> {
-			if (selectedFigure != null) {
-				canvasState.deleteFigure(selectedFigure);
-				selectedFigure = null;
+			if (!selectedFigures.isEmpty()) {
+				for(Figure figure : selectedFigures) {
+					canvasState.deleteFigure(figure);
+				}
+				selectedFigures = new ArrayList<>();
 				redrawCanvas();
 			}
 		});
@@ -173,7 +194,7 @@ public class PaintPane extends BorderPane {
 		for(Figure nonDrawableFigure : canvasState.figures()) {
 			// Castear a DrawableFigure sabiendo que se instanció como una clase que implementa DrawableFigure
 			DrawableFigure figure = (DrawableFigure) nonDrawableFigure;
-			if(figure == selectedFigure) {
+			if(selectedFigures.contains(figure) || figure.equals(imaginaryRectangle)) {
 				gc.setStroke(Color.RED);
 			} else {
 				gc.setStroke(lineColor);

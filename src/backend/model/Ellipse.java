@@ -1,6 +1,6 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
+import java.util.Objects;
 
 public class Ellipse implements Figure {
 
@@ -39,4 +39,19 @@ public class Ellipse implements Figure {
         centerPoint.move(diffX, diffY);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
+        if(obj instanceof Ellipse e) {
+            return centerPoint.equals(e.centerPoint) && sMayorAxis == e.sMayorAxis && sMinorAxis == e.sMinorAxis;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(centerPoint, sMayorAxis, sMinorAxis);
+    }
 }

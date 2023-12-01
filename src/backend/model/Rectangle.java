@@ -1,6 +1,6 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
+import java.util.Objects;
 
 public class Rectangle implements Figure {
 
@@ -34,4 +34,19 @@ public class Rectangle implements Figure {
         return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
+        if(obj instanceof Rectangle r) {
+            return topLeft.equals(r.topLeft) && bottomRight.equals(r.bottomRight);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(topLeft, bottomRight);
+    }
 }
