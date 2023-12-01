@@ -22,11 +22,4 @@ public class Circle extends Ellipse {
                 Math.pow(getCenterPoint().getY() - point.getY(), 2)) < getRadius();
     }
 
-    @Override
-    public void draw(GraphicsContext gc) {
-        double diameter = getRadius() * 2;
-        gc.fillOval(getCenterPoint().getX() - getRadius(), getCenterPoint().getY() - getRadius(), diameter, diameter);
-        gc.strokeOval(getCenterPoint().getX() - getRadius(), getCenterPoint().getY() - getRadius(), diameter, diameter);
-    }
-
 }

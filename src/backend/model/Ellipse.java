@@ -35,12 +35,6 @@ public class Ellipse implements Figure {
                 (Math.pow(point.getY() - centerPoint.getY(), 2) / Math.pow(sMinorAxis, 2)) <= 0.30;
     }
 
-    @Override
-    public void draw(GraphicsContext gc) {
-        gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-    }
-
     public void move(double diffX, double diffY){
         centerPoint.move(diffX, diffY);
     }
