@@ -224,7 +224,6 @@ public class PaintPane extends BorderPane {
 			} else {
 				gc.setStroke(lineColor);
 			}
-			gc.setFill(figureColorMap.get(figure));
 			figure.draw(gc, figureColorMap);
 		}
 	}
