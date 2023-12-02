@@ -189,6 +189,27 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
+		groupButton.setOnAction(event -> {
+			if (!selectedFigures.isEmpty()) {
+				GroupedFigure groupedFigure = new DrawableGroupedFigure(selectedFigures);
+				canvasState.removeAll(selectedFigures);
+				canvasState.addFigure(groupedFigure);
+				selectedFigures = new ArrayList<>();
+				redrawCanvas();
+			}
+		});
+
+		ungroupButton.setOnAction(event -> {
+			if (!selectedFigures.isEmpty()) {
+				for(Figure figure : selectedFigures) {
+					canvasState.deleteFigure(figure);
+					canvasState.addAll(figure.getFigures());
+					}
+				}
+				selectedFigures = new ArrayList<>();
+				redrawCanvas();
+		});
+
 		setLeft(buttonsBox);
 		setRight(canvas);
 	}
@@ -204,7 +225,7 @@ public class PaintPane extends BorderPane {
 				gc.setStroke(lineColor);
 			}
 			gc.setFill(figureColorMap.get(figure));
-			figure.draw(gc);
+			figure.draw(gc, figureColorMap);
 		}
 	}
 
