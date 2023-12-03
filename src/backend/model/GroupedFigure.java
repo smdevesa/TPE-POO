@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public class GroupedFigure implements Figure {
 
-    Collection<Figure> figures;
+    private final Collection<Figure> figures;
 
     public GroupedFigure(Collection<Figure> figures) {
         this.figures = figures;

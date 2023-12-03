@@ -99,8 +99,8 @@ public class PaintPane extends BorderPane {
 					newFigure = figureToggleButton.createFigure(startPoint, endPoint);
 				}
 			}
-			figureColorMap.put(newFigure, fillColorPicker.getValue());
 			if(newFigure != null) {
+				figureColorMap.put(newFigure, fillColorPicker.getValue());
 				canvasState.addFigure(newFigure);
 			}
 			startPoint = null;
