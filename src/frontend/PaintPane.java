@@ -5,13 +5,13 @@ import backend.model.*;
 import frontend.drawablemodel.*;
 import frontend.figurebutton.FigureToggleButton;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import frontend.figurebutton.*;
@@ -41,6 +41,10 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton groupButton = new ToggleButton("Agrupar");
 	private final ToggleButton ungroupButton = new ToggleButton("Desagrupar");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
+
+	private final CheckBox shadowBox = new CheckBox("Sombra");
+	private final CheckBox gradientBox = new CheckBox("Gradiente");
+	private final CheckBox beveledBox = new CheckBox("Biselado");
 
 	// Selector de color de relleno
 	private final ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
@@ -77,6 +81,17 @@ public class PaintPane extends BorderPane {
 		buttonsBox.setStyle("-fx-background-color: #999");
 		buttonsBox.setPrefWidth(100);
 		gc.setLineWidth(1);
+
+		HBox stylesBox = new HBox(4);
+		Label stylesLabel = new Label("Efectos:");
+		CheckBox[] stylesArr = {shadowBox, gradientBox, beveledBox};
+		stylesBox.getChildren().add(stylesLabel);
+		stylesBox.getChildren().addAll(stylesArr);
+		stylesBox.setPadding(new Insets(5));
+		stylesBox.setStyle("-fx-background-color: #999");
+		stylesBox.setPrefWidth(100);
+		stylesBox.setSpacing(10);
+		stylesBox.setAlignment(Pos.CENTER);
 
 		canvas.setOnMousePressed(event -> {
 			System.out.println("pressed");
@@ -210,6 +225,7 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 		});
 
+		setTop(stylesBox);
 		setLeft(buttonsBox);
 		setRight(canvas);
 	}
