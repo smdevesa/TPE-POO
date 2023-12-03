@@ -20,4 +20,9 @@ public class Circle extends Ellipse {
                 Math.pow(getCenterPoint().getY() - point.getY(), 2)) < getRadius();
     }
 
+    public boolean isInRectangle(Rectangle rectangle) {
+        return (rectangle.getTopLeft().getX() < (getCenterPoint().getX() - (getRadius())) && rectangle.getBottomRight().getX() > (getCenterPoint().getX() + (getRadius()))
+                && rectangle.getTopLeft().getY() < getCenterPoint().getY() - (getRadius()) && rectangle.getBottomRight().getY() > (getCenterPoint().getY() + (getRadius())));
+    }
+
 }
