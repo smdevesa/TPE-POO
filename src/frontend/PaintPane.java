@@ -16,10 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import frontend.figurebutton.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PaintPane extends BorderPane {
 
@@ -64,6 +61,12 @@ public class PaintPane extends BorderPane {
 	// Colores de relleno de cada figura
 	private final Map<Figure, Color> figureColorMap = new HashMap<>();
 
+	// Efectos de cada figura
+	private final Map<Figure, SortedSet<Effect>> figureEffectsMap = new HashMap<>();
+
+	// Relacion de checkboxes con efectos
+	private final Map<CheckBox, Effect> checkBoxEffectMap = new HashMap<>();
+
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
@@ -85,6 +88,9 @@ public class PaintPane extends BorderPane {
 		HBox stylesBox = new HBox(4);
 		Label stylesLabel = new Label("Efectos:");
 		CheckBox[] stylesArr = {shadowBox, gradientBox, beveledBox};
+		checkBoxEffectMap.put(shadowBox, Effect.SHADOW);
+		checkBoxEffectMap.put(gradientBox, Effect.GRADIENT);
+		checkBoxEffectMap.put(beveledBox, Effect.BEVELED);
 		stylesBox.getChildren().add(stylesLabel);
 		stylesBox.getChildren().addAll(stylesArr);
 		stylesBox.setPadding(new Insets(5));
@@ -116,6 +122,12 @@ public class PaintPane extends BorderPane {
 			}
 			if(newFigure != null) {
 				figureColorMap.put(newFigure, fillColorPicker.getValue());
+				figureEffectsMap.put(newFigure, new TreeSet<>());
+				for(CheckBox checkBox : checkBoxEffectMap.keySet()) {
+					if(checkBox.isSelected()) {
+						figureEffectsMap.get(newFigure).add(checkBoxEffectMap.get(checkBox));
+					}
+				}
 				canvasState.addFigure(newFigure);
 			}
 			startPoint = null;
@@ -240,7 +252,7 @@ public class PaintPane extends BorderPane {
 			} else {
 				gc.setStroke(lineColor);
 			}
-			figure.draw(gc, figureColorMap);
+			figure.draw(gc, figureColorMap, figureEffectsMap);
 		}
 	}
 
