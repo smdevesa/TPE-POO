@@ -17,6 +17,8 @@ import javafx.scene.paint.Color;
 import frontend.figurebutton.*;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 public class PaintPane extends BorderPane {
 
@@ -40,8 +42,8 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton rotateButton = new ToggleButton("Girar D");
 	private final ToggleButton flipHButton = new ToggleButton("Voltear H");
 	private final ToggleButton flipVButton = new ToggleButton("Voltear V");
-	private final ToggleButton zoomButton = new ToggleButton("Escalar +");
-	private final ToggleButton zoomOutButton = new ToggleButton("Escalar -");
+	private final ToggleButton scalePButton = new ToggleButton("Escalar +");
+	private final ToggleButton  scaleNButton = new ToggleButton("Escalar -");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
 	private final CheckBox shadowBox = new CheckBox("Sombra");
@@ -75,7 +77,7 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
-		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, groupButton, ungroupButton, rotateButton, flipHButton, flipVButton, zoomButton, zoomOutButton};
+		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, groupButton, ungroupButton, rotateButton, flipHButton, flipVButton, scalePButton, scaleNButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
 			tool.setMinWidth(90);
@@ -214,15 +216,11 @@ public class PaintPane extends BorderPane {
 		});
 
 		deleteButton.setOnAction(event -> {
-			if (!selectedFigures.isEmpty()) {
-				for(Figure figure : selectedFigures) {
-					canvasState.remove(figure);
-					figureColorMap.remove(figure);
-					figureEffectsMap.remove(figure);
-				}
-				selectedFigures = new ArrayList<>();
-				redrawCanvas();
-			}
+			doToSelectedFigures(figure -> {
+				canvasState.remove(figure);
+				figureColorMap.remove(figure);
+				figureEffectsMap.remove(figure);
+			});
 		});
 
 		groupButton.setOnAction(event -> {
@@ -236,30 +234,41 @@ public class PaintPane extends BorderPane {
 		});
 
 		ungroupButton.setOnAction(event -> {
-			if (!selectedFigures.isEmpty()) {
-				for(Figure figure : selectedFigures) {
-					canvasState.remove(figure);
-					canvasState.addAll(figure.getFigures());
-					}
-				}
-				selectedFigures = new ArrayList<>();
-				redrawCanvas();
+			doToSelectedFigures(figure -> {
+				canvasState.remove(figure);
+				canvasState.addAll(figure.getFigures());
+			});
 		});
 
 		rotateButton.setOnAction(event -> {
-			if(!selectedFigures.isEmpty()){
-				for(Figure figure : selectedFigures){
-					figure.rotate();
-				}
-			}
-			selectedFigures = new ArrayList<>();
-			redrawCanvas();
+			doToSelectedFigures(Figure::rotate);
+		});
+
+		flipHButton.setOnAction(event -> {
+			doToSelectedFigures(Figure::flipH);
+
+		});
+
+		flipVButton.setOnAction(event ->{
+			doToSelectedFigures(Figure::flipV);
+		});
+
+		scalePButton.setOnAction(event -> {
+			doToSelectedFigures(figure -> {figure.scale(1.25);});
+		});
+
+		scaleNButton.setOnAction(event -> {
+			doToSelectedFigures(figure -> {figure.scale(0.75);});
 		});
 
 		setTop(stylesBox);
 		setLeft(buttonsBox);
 		setRight(canvas);
+
+
 	}
+
+
 
 	private void redrawCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -331,4 +340,13 @@ public class PaintPane extends BorderPane {
 	}
 
 
+	private void doToSelectedFigures(Consumer<Figure> f){
+		if(!selectedFigures.isEmpty()){
+			for(Figure figure : selectedFigures){
+				f.accept(figure);
+			}
+		}
+		selectedFigures = new ArrayList<>();
+		redrawCanvas();
+	}
 }

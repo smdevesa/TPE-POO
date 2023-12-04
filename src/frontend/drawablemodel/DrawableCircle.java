@@ -35,4 +35,5 @@ public class DrawableCircle extends Circle implements DrawableStyleableFigure {
     public void drawBorder(GraphicsContext gc) {
         drawableEllipse.drawBorder(gc);
     }
+
 }

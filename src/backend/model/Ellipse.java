@@ -61,4 +61,18 @@ public class Ellipse implements Figure {
         sMayorAxis = sMinorAxis;
         sMinorAxis = aux;
     }
+
+    public void flipH(){
+       move(sMayorAxis,0);
+    }
+
+    @Override
+    public void flipV() {
+        move(0, sMinorAxis);
+    }
+
+    public void scale(double size){
+        sMinorAxis *=size;
+        sMayorAxis *= size;
+    }
 }

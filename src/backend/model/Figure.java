@@ -12,5 +12,12 @@ public interface Figure {
         figures.add(this);
         return figures;
     }
-    void rotate();
+     void rotate();
+
+     void flipH();
+
+    void flipV();
+
+    void scale(double size);
+
 }

@@ -3,6 +3,7 @@ package backend.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GroupedFigure implements Figure {
 
@@ -14,9 +15,9 @@ public class GroupedFigure implements Figure {
 
     @Override
     public void move(double diffX, double diffY) {
-        for (Figure figure : figures) {
-            figure.move(diffX, diffY);
-        }
+        doToAllComponents(figure -> {
+            figure.move(diffX,diffY);
+        });
     }
 
     @Override
@@ -45,8 +46,28 @@ public class GroupedFigure implements Figure {
 
     @Override
     public void rotate(){
-        for(Figure figure : getFigures()){
-            figure.rotate();
+        doToAllComponents(Figure::rotate);
+    }
+    @Override
+    public void scale(double size) {
+        doToAllComponents(figure -> {
+            figure.scale(size);
+        });
+    }
+
+    @Override
+    public void flipV() {
+        doToAllComponents(Figure::flipV);
+    }
+
+    @Override
+    public void flipH() {
+        doToAllComponents(Figure::flipH);
+    }
+
+    private void doToAllComponents(Consumer<Figure>f){
+        for(Figure figure : figures){
+            f.accept(figure);
         }
     }
 }

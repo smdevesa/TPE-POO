@@ -25,8 +25,5 @@ public class Circle extends Ellipse {
                 && rectangle.getTopLeft().getY() < (getCenterPoint().getY() - getRadius()) && rectangle.getBottomRight().getY() > (getCenterPoint().getY() + getRadius()));
     }
 
-    @Override
-    public void rotate(){
 
-    }
 }

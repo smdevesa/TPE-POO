@@ -52,10 +52,35 @@ public class Rectangle implements Figure {
 
     @Override
     public void rotate(){
-        double distX = bottomRight.getX() - topLeft.getX();
-        double distY = bottomRight.getY() - topLeft.getY();
+        topLeft.move(getDisX()/2 + getDisY()/2 - getDisY(), -(getDisX()/2 - getDisY()/2));
+        bottomRight.move(-(getDisX()/2 + getDisY()/2) + getDisY(), getDisX()/2 - getDisY()/2);
+    }
 
-        topLeft.move(distX/2 + distY/2 - distY, -(distX/2 - distY/2));
-        bottomRight.move(-(distX/2 + distY/2) + distY, distX/2 - distY/2);
+    public void flipH(){
+        move(getDisX(),0 );
+    }
+
+    public void flipV(){
+        move(0, getDisY());
+    }
+
+    public void scale(double size ){
+        double mult = Math.abs((1-size)/4);
+        if(size >= 1){
+            topLeft.move(-getDisX()* mult,-getDisY()* mult);
+            bottomRight.move(getDisX()* mult,getDisY()* mult);
+        }
+        else{
+            topLeft.move(getDisX()* mult,getDisY()* mult);
+            bottomRight.move(-getDisX()*mult,-getDisY()* mult);
+        }
+
+    }
+
+    private double getDisX(){
+        return bottomRight.getX() - topLeft.getX();
+    }
+    private double getDisY(){
+        return bottomRight.getY() - topLeft.getY();
     }
 }
