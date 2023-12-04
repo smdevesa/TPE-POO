@@ -37,6 +37,11 @@ public class PaintPane extends BorderPane {
 	private final FigureToggleButton ellipseButton = new EllipseButton("Elipse");
 	private final ToggleButton groupButton = new ToggleButton("Agrupar");
 	private final ToggleButton ungroupButton = new ToggleButton("Desagrupar");
+	private final ToggleButton rotateButton = new ToggleButton("Girar D");
+	private final ToggleButton flipHButton = new ToggleButton("Voltear H");
+	private final ToggleButton flipVButton = new ToggleButton("Voltear V");
+	private final ToggleButton zoomButton = new ToggleButton("Escalar +");
+	private final ToggleButton zoomOutButton = new ToggleButton("Escalar -");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
 	private final CheckBox shadowBox = new CheckBox("Sombra");
@@ -70,7 +75,7 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
-		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, groupButton, ungroupButton};
+		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, groupButton, ungroupButton, rotateButton, flipHButton, flipVButton, zoomButton, zoomOutButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
 			tool.setMinWidth(90);
@@ -239,6 +244,16 @@ public class PaintPane extends BorderPane {
 				}
 				selectedFigures = new ArrayList<>();
 				redrawCanvas();
+		});
+
+		rotateButton.setOnAction(event -> {
+			if(!selectedFigures.isEmpty()){
+				for(Figure figure : selectedFigures){
+					figure.rotate();
+				}
+			}
+			selectedFigures = new ArrayList<>();
+			redrawCanvas();
 		});
 
 		setTop(stylesBox);

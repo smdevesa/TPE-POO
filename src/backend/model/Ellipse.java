@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Ellipse implements Figure {
 
     private final Point centerPoint;
-    private final double sMayorAxis, sMinorAxis;
+    private double sMayorAxis, sMinorAxis;
 
     public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis) {
         this.centerPoint = centerPoint;
@@ -53,5 +53,12 @@ public class Ellipse implements Figure {
     public boolean isInRectangle(Rectangle rectangle){
         return (rectangle.getTopLeft().getX() < (centerPoint.getX() - (sMayorAxis/2)) && rectangle.getBottomRight().getX() > (centerPoint.getX() + (sMayorAxis/2))
                 && rectangle.getTopLeft().getY() < (centerPoint.getY() - (sMinorAxis/2)) && rectangle.getBottomRight().getY() > (centerPoint.getY() + (sMinorAxis/2)));
+    }
+
+    @Override
+    public void rotate(){
+        double aux = sMayorAxis;
+        sMayorAxis = sMinorAxis;
+        sMinorAxis = aux;
     }
 }

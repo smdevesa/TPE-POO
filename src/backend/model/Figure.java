@@ -12,4 +12,5 @@ public interface Figure {
         figures.add(this);
         return figures;
     }
+    void rotate();
 }

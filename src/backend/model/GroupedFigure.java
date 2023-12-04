@@ -42,4 +42,11 @@ public class GroupedFigure implements Figure {
     public List<Figure> getFigures() {
         return new ArrayList<>(figures);
     }
+
+    @Override
+    public void rotate(){
+        for(Figure figure : getFigures()){
+            figure.rotate();
+        }
+    }
 }

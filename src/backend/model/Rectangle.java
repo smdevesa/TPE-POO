@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Rectangle implements Figure {
 
-    private final Point topLeft, bottomRight;
+    private Point topLeft, bottomRight; //era final
 
     public Rectangle(Point topLeft, Point bottomRight) {
         this.topLeft = topLeft;
@@ -48,5 +48,14 @@ public class Rectangle implements Figure {
     public boolean isInRectangle(Rectangle rectangle){
         return rectangle.getTopLeft().getX() < topLeft.getX() && rectangle.getTopLeft().getY() < topLeft.getY()
                 && rectangle.getBottomRight().getX() > bottomRight.getX() && rectangle.getBottomRight().getY() > bottomRight.getY();
+    }
+
+    @Override
+    public void rotate(){
+        double distX = bottomRight.getX() - topLeft.getX();
+        double distY = bottomRight.getY() - topLeft.getY();
+
+        topLeft.move(distX/2 + distY/2 - distY, -(distX/2 - distY/2));
+        bottomRight.move(-(distX/2 + distY/2) + distY, distX/2 - distY/2);
     }
 }
