@@ -129,7 +129,7 @@ public class PaintPane extends BorderPane {
 						figureEffectsMap.get(newFigure).add(checkBoxEffectMap.get(checkBox));
 					}
 				}
-				canvasState.addFigure(newFigure);
+				canvasState.add(newFigure);
 			}
 			startPoint = null;
 			redrawCanvas();
@@ -164,7 +164,7 @@ public class PaintPane extends BorderPane {
 						}
 						printSelectionLabel(found, label.toString());
 					}
-					canvasState.deleteFigure(imaginaryRectangle);
+					canvasState.remove(imaginaryRectangle);
 					imaginaryRectangle = null;
 				}
 				else {
@@ -199,10 +199,10 @@ public class PaintPane extends BorderPane {
 				}
 				else {
 					if(imaginaryRectangle != null) {
-						canvasState.deleteFigure(imaginaryRectangle);
+						canvasState.remove(imaginaryRectangle);
 					}
 					imaginaryRectangle = new ImaginaryRectangle(startPoint, eventPoint);
-					canvasState.addFigure(imaginaryRectangle);
+					canvasState.add(imaginaryRectangle);
 				}
 				redrawCanvas();
 			}
@@ -211,7 +211,7 @@ public class PaintPane extends BorderPane {
 		deleteButton.setOnAction(event -> {
 			if (!selectedFigures.isEmpty()) {
 				for(Figure figure : selectedFigures) {
-					canvasState.deleteFigure(figure);
+					canvasState.remove(figure);
 					figureColorMap.remove(figure);
 					figureEffectsMap.remove(figure);
 				}
@@ -224,7 +224,7 @@ public class PaintPane extends BorderPane {
 			if (!selectedFigures.isEmpty()) {
 				GroupedFigure groupedFigure = new DrawableGroupedFigure(selectedFigures);
 				canvasState.removeAll(selectedFigures);
-				canvasState.addFigure(groupedFigure);
+				canvasState.add(groupedFigure);
 				selectedFigures = new ArrayList<>();
 				redrawCanvas();
 			}
@@ -233,7 +233,7 @@ public class PaintPane extends BorderPane {
 		ungroupButton.setOnAction(event -> {
 			if (!selectedFigures.isEmpty()) {
 				for(Figure figure : selectedFigures) {
-					canvasState.deleteFigure(figure);
+					canvasState.remove(figure);
 					canvasState.addAll(figure.getFigures());
 					}
 				}
