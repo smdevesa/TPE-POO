@@ -7,7 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 
 public class DrawableSquare extends Square implements DrawableStyleableFigure {
@@ -16,13 +15,6 @@ public class DrawableSquare extends Square implements DrawableStyleableFigure {
 
     public DrawableSquare(Point topLeft, double size) {
         super(topLeft, size);
-    }
-
-    @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap, boolean selectionBorder) {
-        colorMap.put(drawableRectangle, colorMap.get(this));
-        effectMap.put(drawableRectangle, effectMap.get(this));
-        drawableRectangle.draw(gc, colorMap, effectMap, selectionBorder);
     }
 
     @Override

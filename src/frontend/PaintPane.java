@@ -299,16 +299,20 @@ public class PaintPane extends BorderPane {
 
 	private void updateCheckBoxState() {
 		for(CheckBox checkBox : checkBoxEffectMap.keySet()) {
-			Status firstStatus = ((DrawableFigure)selectedFigures.get(0)).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap);
-			for(Figure figure : selectedFigures) {
-				if(((DrawableFigure) figure).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap) != firstStatus || firstStatus == Status.UNDETERMINED) {
-					checkBox.setIndeterminate(true);
-					return;
-				}
-			}
-			checkBox.setIndeterminate(false);
-			checkBox.setSelected(firstStatus == Status.SELECTED);
+			updateSingleCheckBox(checkBox);
 		}
+	}
+
+	private void updateSingleCheckBox(CheckBox checkBox) {
+		Status firstStatus = ((DrawableFigure)selectedFigures.get(0)).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap);
+		for(Figure figure : selectedFigures) {
+			if(((DrawableFigure) figure).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap) != firstStatus || firstStatus == Status.UNDETERMINED) {
+				checkBox.setIndeterminate(true);
+				return;
+			}
+		}
+		checkBox.setIndeterminate(false);
+		checkBox.setSelected(firstStatus == Status.SELECTED);
 	}
 
 

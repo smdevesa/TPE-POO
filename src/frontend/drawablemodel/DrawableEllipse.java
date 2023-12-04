@@ -15,14 +15,6 @@ public class DrawableEllipse extends Ellipse implements DrawableStyleableFigure 
         super(centerPoint, sMayorAxis, sMinorAxis);
     }
 
-/* CON ESTE METODO NO SE LE PUEDEN APLICAR EFECTOS A LAS ELIPSES (Y AHORA TAMPCOO A LOS CIRCLES). Tampoco se le dibuja el borde negro a elipse
-    @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap, boolean selectionBorder) {
-        gc.setFill(colorMap.get(this));
-        gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-    }*/
-
     @Override
     public void drawBeveled(GraphicsContext gc, Color color) {
         double arcX = getCenterPoint().getX() - getsMayorAxis()/2;

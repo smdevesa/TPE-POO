@@ -5,7 +5,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 
 public interface DrawableFigure extends Figure {

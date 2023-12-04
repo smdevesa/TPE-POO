@@ -1,23 +1,13 @@
 package frontend.drawablemodel;
 
 import backend.model.Circle;
-import backend.model.Figure;
 import backend.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.ArcType;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
 
 public class DrawableCircle extends Circle implements DrawableStyleableFigure {
 
-    private double diameter = getRadius() * 2;
-    private final DrawableEllipse drawableEllipse = new DrawableEllipse(getCenterPoint(), diameter,diameter);
+    private final DrawableEllipse drawableEllipse = new DrawableEllipse(getCenterPoint(), getsMayorAxis(), getsMinorAxis());
 
     public DrawableCircle(Point centerPoint, double radius) {
         super(centerPoint, radius);
