@@ -1,6 +1,5 @@
 package frontend.drawablemodel;
 
-import backend.model.Figure;
 import backend.model.Point;
 import backend.model.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,29 +8,10 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-
-public class DrawableRectangle extends Rectangle implements DrawableFigure {
+public class DrawableRectangle extends Rectangle implements DrawableStyleableFigure {
 
     public DrawableRectangle(Point topLeft, Point bottomRight) {
         super(topLeft, bottomRight);
-    }
-
-    @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap) {
-        Color fillColor = colorMap.get(this);
-        for(Effect effect : effectMap.get(this)) {
-            effect.apply(this, gc, fillColor);
-        }
-        gc.setFill(fillColor);
-        if(!effectMap.get(this).contains(Effect.GRADIENT)) {
-            drawFillWithOffset(gc, 0, 0);
-        }
-        if(!effectMap.get(this).contains(Effect.BEVELED)) {
-            drawBorder(gc);
-        }
     }
 
     @Override
@@ -65,12 +45,12 @@ public class DrawableRectangle extends Rectangle implements DrawableFigure {
         gc.setLineWidth(1);
     }
 
-    private void drawFillWithOffset(GraphicsContext gc, double x, double y) {
+    public void drawFillWithOffset(GraphicsContext gc, double x, double y) {
         gc.fillRect(getTopLeft().getX() + x, getTopLeft().getY() + y,
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
     }
 
-    private void drawBorder(GraphicsContext gc) {
+    public void drawBorder(GraphicsContext gc) {
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
     }

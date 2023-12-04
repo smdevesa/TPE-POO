@@ -2,6 +2,7 @@ package backend.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class GroupedFigure implements Figure {
 
@@ -38,7 +39,7 @@ public class GroupedFigure implements Figure {
     }
 
     @Override
-    public Collection<Figure> getFigures() {
+    public List<Figure> getFigures() {
         return new ArrayList<>(figures);
     }
 }

@@ -91,6 +91,9 @@ public class PaintPane extends BorderPane {
 		checkBoxEffectMap.put(shadowBox, Effect.SHADOW);
 		checkBoxEffectMap.put(gradientBox, Effect.GRADIENT);
 		checkBoxEffectMap.put(beveledBox, Effect.BEVELED);
+		for(CheckBox checkBox : stylesArr) {
+			setCheckBoxActions(checkBox);
+		}
 		stylesBox.getChildren().add(stylesLabel);
 		stylesBox.getChildren().addAll(stylesArr);
 		stylesBox.setPadding(new Insets(5));
@@ -100,12 +103,10 @@ public class PaintPane extends BorderPane {
 		stylesBox.setAlignment(Pos.CENTER);
 
 		canvas.setOnMousePressed(event -> {
-			System.out.println("pressed");
 			startPoint = new Point(event.getX(), event.getY());
 		});
 
 		canvas.setOnMouseReleased(event -> {
-			System.out.println("released");
 			Point endPoint = new Point(event.getX(), event.getY());
 			if (startPoint == null) {
 				return;
@@ -123,7 +124,7 @@ public class PaintPane extends BorderPane {
 			if(newFigure != null) {
 				figureColorMap.put(newFigure, fillColorPicker.getValue());
 				figureEffectsMap.put(newFigure, new TreeSet<>());
-				for(CheckBox checkBox : checkBoxEffectMap.keySet()) {
+				for(CheckBox checkBox : stylesArr) {
 					if(checkBox.isSelected()) {
 						figureEffectsMap.get(newFigure).add(checkBoxEffectMap.get(checkBox));
 					}
@@ -152,7 +153,6 @@ public class PaintPane extends BorderPane {
 		});
 
 		canvas.setOnMouseClicked(event -> {
-			System.out.println("clicked");
 			if(selectionButton.isSelected()) {
 				if(imaginaryRectangle != null) {
 					boolean found = false;
@@ -180,12 +180,14 @@ public class PaintPane extends BorderPane {
 					}
 					printSelectionLabel(found, label.toString());
 				}
+				if(!selectedFigures.isEmpty()) {
+					updateCheckBoxState();
+				}
 				redrawCanvas();
 			}
 		});
 
 		canvas.setOnMouseDragged(event -> {
-			System.out.println("dragged");
 			if(selectionButton.isSelected()) {
 				Point eventPoint = new Point(event.getX(), event.getY());
 				if(!selectedFigures.isEmpty()) {
@@ -210,6 +212,8 @@ public class PaintPane extends BorderPane {
 			if (!selectedFigures.isEmpty()) {
 				for(Figure figure : selectedFigures) {
 					canvasState.deleteFigure(figure);
+					figureColorMap.remove(figure);
+					figureEffectsMap.remove(figure);
 				}
 				selectedFigures = new ArrayList<>();
 				redrawCanvas();
@@ -247,12 +251,7 @@ public class PaintPane extends BorderPane {
 		for(Figure nonDrawableFigure : canvasState.figures()) {
 			// Castear a DrawableFigure sabiendo que se instanció como una clase que implementa DrawableFigure
 			DrawableFigure figure = (DrawableFigure) nonDrawableFigure;
-			if(selectedFigures.contains(figure) || figure.equals(imaginaryRectangle)) {
-				gc.setStroke(Color.RED);
-			} else {
-				gc.setStroke(lineColor);
-			}
-			figure.draw(gc, figureColorMap, figureEffectsMap);
+			figure.draw(gc, figureColorMap, figureEffectsMap, selectedFigures.contains(figure));
 		}
 	}
 
@@ -268,5 +267,49 @@ public class PaintPane extends BorderPane {
 			statusPane.updateStatus("Ninguna figura encontrada");
 		}
 	}
+
+	private void setCheckBoxActions(CheckBox checkBox) {
+		checkBox.setOnAction(event -> {
+			if(!selectedFigures.isEmpty()) {
+				for(Figure figure : selectedFigures) {
+					updateEffectsRecursively(figure, checkBox.isSelected(), checkBoxEffectMap.get(checkBox));
+				}
+				redrawCanvas();
+			}
+		});
+	}
+
+	private void updateEffectsRecursively(Figure figure, boolean selected, Effect effect) {
+		for(Figure component : figure.getFigures()) {
+			// Si esta en el mapa entonces es una figura simple
+			if(figureEffectsMap.containsKey(component)) {
+				if(selected) {
+					figureEffectsMap.get(component).add(effect);
+				}
+				else {
+					figureEffectsMap.get(component).remove(effect);
+				}
+			}
+			else {
+				updateEffectsRecursively(component, selected, effect);
+			}
+		}
+	}
+
+
+	private void updateCheckBoxState() {
+		for(CheckBox checkBox : checkBoxEffectMap.keySet()) {
+			Status firstStatus = ((DrawableFigure)selectedFigures.get(0)).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap);
+			for(Figure figure : selectedFigures) {
+				if(((DrawableFigure) figure).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap) != firstStatus || firstStatus == Status.UNDETERMINED) {
+					checkBox.setIndeterminate(true);
+					return;
+				}
+			}
+			checkBox.setIndeterminate(false);
+			checkBox.setSelected(firstStatus == Status.SELECTED);
+		}
+	}
+
 
 }

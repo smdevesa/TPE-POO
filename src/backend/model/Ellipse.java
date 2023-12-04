@@ -50,7 +50,7 @@ public class Ellipse implements Figure {
         return false;
     }
 
-    public boolean isInRectangle(Rectangle rectangle){ //primero supongo el mayorAxis horizontal, despues del || lo supongo al revex
+    public boolean isInRectangle(Rectangle rectangle){
         return (rectangle.getTopLeft().getX() < (centerPoint.getX() - (sMayorAxis/2)) && rectangle.getBottomRight().getX() > (centerPoint.getX() + (sMayorAxis/2))
                 && rectangle.getTopLeft().getY() < (centerPoint.getY() - (sMinorAxis/2)) && rectangle.getBottomRight().getY() > (centerPoint.getY() + (sMinorAxis/2)));
     }

@@ -16,25 +16,21 @@ public class DrawableGroupedFigure extends GroupedFigure implements DrawableFigu
     }
 
     @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap) {
+    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap, boolean selectionBorder) {
         for(Figure figure : getFigures()) {
-            ((DrawableFigure) figure).draw(gc, colorMap, effectMap);
+            ((DrawableFigure) figure).draw(gc, colorMap, effectMap, selectionBorder);
         }
     }
 
     @Override
-    public void drawGradient(GraphicsContext gc, Color color) {
-
-    }
-
-    @Override
-    public void drawBeveled(GraphicsContext gc, Color color) {
-
-    }
-
-    @Override
-    public void drawShadow(GraphicsContext gc, Color color) {
-
+    public Status getStatus(Effect effect, Map<Figure, SortedSet<Effect>> effectMap) {
+        Status firstStatus = ((DrawableFigure)getFigures().get(0)).getStatus(effect, effectMap);
+        for(Figure figure : getFigures()) {
+            if(((DrawableFigure) figure).getStatus(effect, effectMap) != firstStatus) {
+                return Status.UNDETERMINED;
+            }
+        }
+        return firstStatus;
     }
 }
 

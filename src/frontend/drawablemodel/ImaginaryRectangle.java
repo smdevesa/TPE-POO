@@ -17,23 +17,14 @@ public class ImaginaryRectangle extends Rectangle implements DrawableFigure {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap) {
+    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap, boolean selectionBorder) {
+        gc.setStroke(Color.RED);
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
     }
 
     @Override
-    public void drawBeveled(GraphicsContext gc, Color color) {
-
-    }
-
-    @Override
-    public void drawGradient(GraphicsContext gc, Color color) {
-
-    }
-
-    @Override
-    public void drawShadow(GraphicsContext gc, Color color) {
-
+    public Status getStatus(Effect effect, Map<Figure, SortedSet<Effect>> effectMap) {
+        return Status.UNSELECTED;
     }
 }

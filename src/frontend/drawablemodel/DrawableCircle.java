@@ -14,27 +14,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-public class DrawableCircle extends Circle implements DrawableFigure {
-
-    public DrawableCircle(Point centerPoint, double radius) {
-        super(centerPoint, radius);
-    }
+public class DrawableCircle extends Circle implements DrawableStyleableFigure {
 
     private double diameter = getRadius() * 2;
 
-    @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap) {
-        Color fillColor = colorMap.get(this);
-        for(Effect effect : effectMap.get(this)) {
-            effect.apply(this, gc, fillColor);
-        }
-        gc.setFill(fillColor);
-        if(!effectMap.get(this).contains(Effect.GRADIENT)) {
-            drawFillWithOffset(gc, 0, 0);
-        }
-        if(!effectMap.get(this).contains(Effect.BEVELED)) {
-            drawBorder(gc);
-        }
+    public DrawableCircle(Point centerPoint, double radius) {
+        super(centerPoint, radius);
     }
 
     @Override
@@ -65,11 +50,11 @@ public class DrawableCircle extends Circle implements DrawableFigure {
         gc.setLineWidth(1);
     }
 
-    private void drawFillWithOffset(GraphicsContext gc, double offsetX, double offsetY) {
+    public void drawFillWithOffset(GraphicsContext gc, double offsetX, double offsetY) {
         gc.fillOval(getCenterPoint().getX() - getRadius() + offsetX, getCenterPoint().getY() - getRadius() + offsetY, diameter, diameter);
     }
 
-    private void drawBorder(GraphicsContext gc) {
+    public void drawBorder(GraphicsContext gc) {
         gc.strokeOval(getCenterPoint().getX() - getRadius(), getCenterPoint().getY() - getRadius(), diameter, diameter);
     }
 }

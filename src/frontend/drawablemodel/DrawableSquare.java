@@ -10,19 +10,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-public class DrawableSquare extends Square implements DrawableFigure {
+public class DrawableSquare extends Square implements DrawableStyleableFigure {
 
-    DrawableRectangle drawableRectangle = new DrawableRectangle(getTopLeft(), getBottomRight());
+    private final DrawableRectangle drawableRectangle = new DrawableRectangle(getTopLeft(), getBottomRight());
 
     public DrawableSquare(Point topLeft, double size) {
         super(topLeft, size);
     }
 
     @Override
-    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap) {
+    public void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap, boolean selectionBorder) {
         colorMap.put(drawableRectangle, colorMap.get(this));
         effectMap.put(drawableRectangle, effectMap.get(this));
-        drawableRectangle.draw(gc, colorMap, effectMap);
+        drawableRectangle.draw(gc, colorMap, effectMap, selectionBorder);
     }
 
     @Override
@@ -38,5 +38,15 @@ public class DrawableSquare extends Square implements DrawableFigure {
     @Override
     public void drawGradient(GraphicsContext gc, Color color) {
         drawableRectangle.drawGradient(gc, color);
+    }
+
+    @Override
+    public void drawFillWithOffset(GraphicsContext gc, double x, double y) {
+        drawableRectangle.drawFillWithOffset(gc, x, y);
+    }
+
+    @Override
+    public void drawBorder(GraphicsContext gc) {
+        drawableRectangle.drawBorder(gc);
     }
 }
