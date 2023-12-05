@@ -14,6 +14,18 @@ public class GroupedFigure implements Figure {
     }
 
     @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("Grupo [");
+        doToAllComponents(figure -> {
+            s.append(figure.toString());
+            s.append(", ");
+        });
+        s.setLength(s.length() - 2);
+        s.append("]");
+        return s.toString();
+    }
+
+    @Override
     public void move(double diffX, double diffY) {
         doToAllComponents(figure -> {
             figure.move(diffX,diffY);

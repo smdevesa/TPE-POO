@@ -1,4 +1,4 @@
-package frontend.drawablemodel;
+package frontend;
 
 public enum Status {
     UNDETERMINED, SELECTED, UNSELECTED

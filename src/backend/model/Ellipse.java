@@ -1,7 +1,5 @@
 package backend.model;
 
-import java.util.Objects;
-
 public class Ellipse implements Figure {
 
     private final Point centerPoint;
@@ -30,24 +28,23 @@ public class Ellipse implements Figure {
         return sMinorAxis;
     }
 
+    public void setsMayorAxis(double sMayorAxis) {
+        this.sMayorAxis = sMayorAxis;
+    }
+
+    public void setsMinorAxis(double sMinorAxis) {
+        this.sMinorAxis = sMinorAxis;
+    }
+
+    @Override
     public boolean belongs(Point point){
         return (Math.pow(point.getX() - centerPoint.getX(), 2) / Math.pow(sMayorAxis, 2)) +
                 (Math.pow(point.getY() - centerPoint.getY(), 2) / Math.pow(sMinorAxis, 2)) <= 0.30;
     }
 
+    @Override
     public void move(double diffX, double diffY){
         centerPoint.move(diffX, diffY);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this) {
-            return true;
-        }
-        if(obj instanceof Ellipse e) {
-            return centerPoint.equals(e.centerPoint) && sMayorAxis == e.sMayorAxis && sMinorAxis == e.sMinorAxis;
-        }
-        return false;
     }
 
     public boolean isInRectangle(Rectangle rectangle){
@@ -62,6 +59,7 @@ public class Ellipse implements Figure {
         sMinorAxis = aux;
     }
 
+    @Override
     public void flipH(){
        move(sMayorAxis,0);
     }
@@ -71,8 +69,9 @@ public class Ellipse implements Figure {
         move(0, sMinorAxis);
     }
 
+    @Override
     public void scale(double size){
-        sMinorAxis *=size;
+        sMinorAxis *= size;
         sMayorAxis *= size;
     }
 }

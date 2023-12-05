@@ -3,11 +3,11 @@ package frontend.drawablemodel;
 import backend.model.Figure;
 import backend.model.Point;
 import backend.model.Rectangle;
+import frontend.Status;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 
 public class ImaginaryRectangle extends Rectangle implements DrawableFigure {

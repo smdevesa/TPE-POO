@@ -1,10 +1,8 @@
 package backend.model;
 
-import java.util.Objects;
-
 public class Rectangle implements Figure {
 
-    private Point topLeft, bottomRight; //era final
+    private final Point topLeft, bottomRight;
 
     public Rectangle(Point topLeft, Point bottomRight) {
         this.topLeft = topLeft;
@@ -19,11 +17,13 @@ public class Rectangle implements Figure {
         return bottomRight;
     }
 
+    @Override
     public void move(double diffX, double diffY){
         topLeft.move(diffX, diffY);
         bottomRight.move(diffX, diffY);
     }
 
+    @Override
     public boolean belongs(Point point){
         return point.getX() > topLeft.getX() && point.getX() < bottomRight.getX() &&
                 point.getY() > topLeft.getY() && point.getY() < bottomRight.getY();
@@ -35,16 +35,6 @@ public class Rectangle implements Figure {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(obj == this) {
-            return true;
-        }
-        if(obj instanceof Rectangle r) {
-            return topLeft.equals(r.topLeft) && bottomRight.equals(r.bottomRight);
-        }
-        return false;
-    }
-
     public boolean isInRectangle(Rectangle rectangle){
         return rectangle.getTopLeft().getX() < topLeft.getX() && rectangle.getTopLeft().getY() < topLeft.getY()
                 && rectangle.getBottomRight().getX() > bottomRight.getX() && rectangle.getBottomRight().getY() > bottomRight.getY();
@@ -56,14 +46,17 @@ public class Rectangle implements Figure {
         bottomRight.move(-(getDisX()/2 + getDisY()/2) + getDisY(), getDisX()/2 - getDisY()/2);
     }
 
+    @Override
     public void flipH(){
         move(getDisX(),0 );
     }
 
+    @Override
     public void flipV(){
         move(0, getDisY());
     }
 
+    @Override
     public void scale(double size ){
         double mult = Math.abs((1-size)/4);
         if(size >= 1){

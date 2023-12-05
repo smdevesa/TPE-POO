@@ -1,13 +1,9 @@
 package frontend.drawablemodel;
 
-import backend.model.Figure;
 import backend.model.Point;
 import backend.model.Square;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
-import java.util.Map;
-import java.util.SortedSet;
 
 public class DrawableSquare extends Square implements DrawableStyleableFigure {
 
