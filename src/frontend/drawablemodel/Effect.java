@@ -10,16 +10,16 @@ public enum Effect {
             figure.drawShadow(gc, color);
         }
     },
-    GRADIENT {
-        @Override
-        void apply(DrawableStyleableFigure figure, GraphicsContext gc, Color color) {
-            figure.drawGradient(gc, color);
-        }
-    },
     BEVELED {
         @Override
         void apply(DrawableStyleableFigure figure, GraphicsContext gc, Color color) {
             figure.drawBeveled(gc, color);
+        }
+    },
+    GRADIENT {
+        @Override
+        void apply(DrawableStyleableFigure figure, GraphicsContext gc, Color color) {
+            figure.drawGradient(gc, color);
         }
     };
 
