@@ -14,15 +14,13 @@ public interface DrawableStyleableFigure extends DrawableFigure {
         for(Effect effect : effectMap.get(this)) {
             effect.apply(this, gc, fillColor);
         }
-        gc.setFill(fillColor);
         if(!effectMap.get(this).contains(Effect.GRADIENT)) {
+            gc.setFill(fillColor);
             drawFillWithOffset(gc, 0, 0);
         }
-        if(!effectMap.get(this).contains(Effect.BEVELED) || selectionBorder) {
-            Color borderColor = selectionBorder ? Color.RED : Color.BLACK;
-            gc.setStroke(borderColor);
-            drawBorder(gc);
-        }
+        Color borderColor = selectionBorder ? Color.RED : Color.BLACK;
+        gc.setStroke(borderColor);
+        drawBorder(gc);
     }
     void drawShadow(GraphicsContext gc, Color color);
     void drawGradient(GraphicsContext gc, Color color);
