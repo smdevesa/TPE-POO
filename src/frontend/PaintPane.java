@@ -168,7 +168,7 @@ public class PaintPane extends BorderPane {
 				} else {
 					selectedFigures = new ArrayList<>();
 					Point eventPoint = new Point(event.getX(), event.getY());
-					printSelectionLabelIf(figure -> figure.belongs(eventPoint));
+					printSelectionLabelIf(figure -> figure.belongs(eventPoint) && selectedFigures.isEmpty());
 				}
 				if (!selectedFigures.isEmpty()) {
 					updateCheckBoxState();
