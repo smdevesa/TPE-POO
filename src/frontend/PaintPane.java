@@ -25,15 +25,28 @@ public class PaintPane extends BorderPane {
 	// BackEnd
 	private final CanvasState canvasState;
 
+	// Constantes de reescalado
 	private final static double SCALE_POSITIVE_MULTIPLIER = 1.25;
 	private final static double SCALE_NEGATIVE_MULTIPLIER = 0.75;
 
+	private final static String CONTROLLERS_BACKGROUND_COLOR = "-fx-background-color: #999";
+	private static final int CONTROLLERS_PADDING = 5;
+
+	// Checkboxes barra superior
+	private static final int HBOX_SPACING = 10;
+
 	// Canvas y relacionados
-	private final Canvas canvas = new Canvas(800, 600);
+	private static final int CANVAS_WIDTH = 800;
+	private static final int CANVAS_HEIGHT = 600;
+	private final Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	private final GraphicsContext gc = canvas.getGraphicsContext2D();
 	private final Color defaultFillColor = Color.YELLOW;
 
 	// Botones Barra Izquierda
+	private static final int BUTTON_MIN_WIDTH = 90;
+	private static final int VBOX_SPACING = 10;
+	private static final int BUTTON_BOX_PREF_WIDTH = 100;
+
 	private final ToggleButton selectionButton = new ToggleButton("Seleccionar");
 	private final FigureToggleButton rectangleButton = new RectangleButton("Rectángulo");
 	private final FigureToggleButton circleButton = new CircleButton("Círculo");
@@ -79,22 +92,27 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
+		initializeUI();
+		setEventHandlers();
+	}
+
+	private void initializeUI() {
 		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, groupButton, ungroupButton, rotateButton, flipHButton, flipVButton, scalePButton, scaleNButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
-			tool.setMinWidth(90);
+			tool.setMinWidth(BUTTON_MIN_WIDTH);
 			tool.setToggleGroup(tools);
 			tool.setCursor(Cursor.HAND);
 		}
-		VBox buttonsBox = new VBox(10);
+		VBox buttonsBox = new VBox(VBOX_SPACING);
 		buttonsBox.getChildren().addAll(toolsArr);
 		buttonsBox.getChildren().add(fillColorPicker);
-		buttonsBox.setPadding(new Insets(5));
-		buttonsBox.setStyle("-fx-background-color: #999");
-		buttonsBox.setPrefWidth(100);
+		buttonsBox.setPadding(new Insets(CONTROLLERS_PADDING));
+		buttonsBox.setStyle(CONTROLLERS_BACKGROUND_COLOR);
+		buttonsBox.setPrefWidth(BUTTON_BOX_PREF_WIDTH);
 		gc.setLineWidth(1);
 
-		HBox stylesBox = new HBox(4);
+		HBox stylesBox = new HBox(HBOX_SPACING);
 		Label stylesLabel = new Label("Efectos:");
 		CheckBox[] stylesArr = {shadowBox, gradientBox, beveledBox};
 		checkBoxEffectMap.put(shadowBox, Effect.SHADOW);
@@ -105,12 +123,16 @@ public class PaintPane extends BorderPane {
 		}
 		stylesBox.getChildren().add(stylesLabel);
 		stylesBox.getChildren().addAll(stylesArr);
-		stylesBox.setPadding(new Insets(5));
-		stylesBox.setStyle("-fx-background-color: #999");
-		stylesBox.setPrefWidth(100);
-		stylesBox.setSpacing(10);
+		stylesBox.setPadding(new Insets(CONTROLLERS_PADDING));
+		stylesBox.setStyle(CONTROLLERS_BACKGROUND_COLOR);
 		stylesBox.setAlignment(Pos.CENTER);
 
+		setTop(stylesBox);
+		setLeft(buttonsBox);
+		setRight(canvas);
+	}
+
+	private void setEventHandlers() {
 		canvas.setOnMousePressed(event -> startPoint = new Point(event.getX(), event.getY()));
 
 		canvas.setOnMouseReleased(event -> {
@@ -131,7 +153,7 @@ public class PaintPane extends BorderPane {
 			if (newFigure != null) {
 				figureColorMap.put(newFigure, fillColorPicker.getValue());
 				figureEffectsMap.put(newFigure, new TreeSet<>());
-				for (CheckBox checkBox : stylesArr) {
+				for (CheckBox checkBox : checkBoxEffectMap.keySet()) {
 					if (checkBox.isSelected()) {
 						figureEffectsMap.get(newFigure).add(checkBoxEffectMap.get(checkBox));
 					}
@@ -203,6 +225,11 @@ public class PaintPane extends BorderPane {
 			figureEffectsMap.remove(figure);
 		}));
 
+		ungroupButton.setOnAction(event -> doToSelectedFigures(figure -> {
+			canvasState.remove(figure);
+			canvasState.addAll(figure.getFigures());
+		}));
+
 		groupButton.setOnAction(event -> {
 			if (!selectedFigures.isEmpty()) {
 				GroupedFigure groupedFigure = new DrawableGroupedFigure(selectedFigures);
@@ -213,24 +240,11 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-		ungroupButton.setOnAction(event -> doToSelectedFigures(figure -> {
-			canvasState.remove(figure);
-			canvasState.addAll(figure.getFigures());
-		}));
-
 		rotateButton.setOnAction(event -> doToSelectedFigures(Figure::rotate));
-
 		flipHButton.setOnAction(event -> doToSelectedFigures(Figure::flipH));
-
 		flipVButton.setOnAction(event -> doToSelectedFigures(Figure::flipV));
-
 		scalePButton.setOnAction(event -> doToSelectedFigures(figure -> figure.scale(SCALE_POSITIVE_MULTIPLIER)));
-
 		scaleNButton.setOnAction(event -> doToSelectedFigures(figure -> figure.scale(SCALE_NEGATIVE_MULTIPLIER)));
-
-		setTop(stylesBox);
-		setLeft(buttonsBox);
-		setRight(canvas);
 
 	}
 
