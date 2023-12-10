@@ -24,7 +24,10 @@ public interface DrawableStyleableFigure extends DrawableFigure {
         gc.setStroke(borderColor);
         drawBorder(gc);
     }
-    void drawShadow(GraphicsContext gc, Color color);
+    default void drawShadow(GraphicsContext gc, Color color){
+        gc.setFill(Color.GREY);
+        drawFillWithOffset(gc, 10, 10);
+    }
     void drawGradient(GraphicsContext gc, Color color);
     void drawBeveled(GraphicsContext gc, Color color);
     void drawFillWithOffset(GraphicsContext gc, double x, double y);

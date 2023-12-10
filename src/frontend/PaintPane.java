@@ -231,6 +231,7 @@ public class PaintPane extends BorderPane {
 			canvasState.addAll(figure.getFigures());
 		}));
 
+
 		groupButton.setOnAction(event -> {
 			if (!selectedFigures.isEmpty()) {
 				GroupedFigure groupedFigure = new DrawableGroupedFigure(selectedFigures);
@@ -314,6 +315,7 @@ public class PaintPane extends BorderPane {
 		Status firstStatus = ((DrawableFigure) selectedFigures.get(0)).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap);
 		for (Figure figure : selectedFigures) {
 			if (((DrawableFigure) figure).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap) != firstStatus || firstStatus == Status.UNDETERMINED) {
+				checkBox.setSelected(false);
 				checkBox.setIndeterminate(true);
 				return;
 			}

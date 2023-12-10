@@ -38,12 +38,6 @@ public class DrawableEllipse extends Ellipse implements DrawableStyleableFigure 
     }
 
     @Override
-    public void drawShadow(GraphicsContext gc, Color color) {
-        gc.setFill(Color.GREY);
-        drawFillWithOffset(gc, 10, 10);
-    }
-
-    @Override
     public void drawFillWithOffset(GraphicsContext gc, double x, double y) {
         gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2) + x, getCenterPoint().getY() - (getsMinorAxis() / 2) + y, getsMayorAxis(), getsMinorAxis());
     }

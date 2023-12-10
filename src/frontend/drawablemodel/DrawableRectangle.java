@@ -15,12 +15,6 @@ public class DrawableRectangle extends Rectangle implements DrawableStyleableFig
     }
 
     @Override
-    public void drawShadow(GraphicsContext gc, Color color) {
-        gc.setFill(Color.GREY);
-        drawFillWithOffset(gc, 10, 10);
-    }
-
-    @Override
     public void drawGradient(GraphicsContext gc, Color color) {
         LinearGradient linearGradient = new LinearGradient(0, 0, 1, 0, true,
                 CycleMethod.NO_CYCLE,

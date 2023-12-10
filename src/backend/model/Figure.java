@@ -22,13 +22,24 @@ public interface Figure {
         return figures;
     }
 
-    //Todos los metodos para implementar las distintas funcionalidades del punto 3.
+    /*
+     Metodo para rotar la figura 90 grados en sentido horario.
+     */
      void rotate();
 
+     /*
+     Proyecta la figura respecto del eje vertical.
+      */
      void flipH();
 
+     /*
+     Proyecta la figura respecto del eje horizontal.
+      */
     void flipV();
 
+    /*
+    Metodo para agrandar o achicar la figura dependiendo el parametro size enviado.
+     */
     void scale(double size);
 
 }

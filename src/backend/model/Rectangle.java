@@ -73,9 +73,16 @@ public class Rectangle implements Figure {
 
     }
 
+    /**
+     * @return La longitud de la base del Rectangulo.
+     */
     private double getDisX(){
         return bottomRight.getX() - topLeft.getX();
     }
+
+    /**
+     * @return La altura del Rectangulo.
+     */
     private double getDisY(){
         return bottomRight.getY() - topLeft.getY();
     }
