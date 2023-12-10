@@ -23,6 +23,8 @@ public class DrawableGroupedFigure extends GroupedFigure implements DrawableFigu
         }
     }
 
+
+    //Como se trata de una figura agrupada, aqui devuelve si todas las componentes tienen o no cierto efecto, o si algunas lo tienen y otras no.
     @Override
     public Status getStatus(Effect effect, Map<Figure, SortedSet<Effect>> effectMap) {
         Status firstStatus = ((DrawableFigure)getFigures().get(0)).getStatus(effect, effectMap);

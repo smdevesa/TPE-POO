@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+
+//Clase para la Implementacion de Figuras Agrupadas.
 public class GroupedFigure implements Figure {
 
     private final Collection<Figure> figures;
@@ -25,6 +27,8 @@ public class GroupedFigure implements Figure {
         return s.toString();
     }
 
+
+    //Override de metodo move para mover todas las figuras de la agrupacion en simultaneo.
     @Override
     public void move(double diffX, double diffY) {
         doToAllComponents(figure -> {
@@ -56,6 +60,8 @@ public class GroupedFigure implements Figure {
         return new ArrayList<>(figures);
     }
 
+
+    //Override de los metodos para implementar las distintas funcionalidades del punto 3.
     @Override
     public void rotate(){
         doToAllComponents(Figure::rotate);

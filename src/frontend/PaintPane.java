@@ -61,6 +61,7 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton scaleNButton = new ToggleButton("Escalar -");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
+	// Checkboxes Barra Horizontal Superior.
 	private final CheckBox shadowBox = new CheckBox("Sombra");
 	private final CheckBox gradientBox = new CheckBox("Gradiente");
 	private final CheckBox beveledBox = new CheckBox("Biselado");
@@ -248,6 +249,7 @@ public class PaintPane extends BorderPane {
 
 	}
 
+	//Se encarga de dibujar todas las figuras en el canvas.
 	private void redrawCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for (Figure nonDrawableFigure : canvasState.figures()) {
@@ -257,11 +259,13 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
+	// Agrega una figura a la lista de figuras seleccionadas y actualiza el label de seleccion.
 	private void addSelectedFigure(StringBuilder label, Figure figure) {
 		selectedFigures.add(figure);
 		label.append(figure);
 	}
 
+	// Imprime el label de seleccion en la barra de estado.
 	private void printSelectionLabel(Boolean found, String label) {
 		if (found) {
 			statusPane.updateStatus(label);
@@ -270,6 +274,7 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
+	// Setea las acciones de los checkboxes.
 	private void setCheckBoxActions(CheckBox checkBox) {
 		checkBox.setOnAction(event -> {
 			if (!selectedFigures.isEmpty()) {
@@ -281,6 +286,7 @@ public class PaintPane extends BorderPane {
 		});
 	}
 
+	// Actualiza los efectos de una figura y sus componentes recursivamente.
 	private void updateEffectsRecursively(Figure figure, boolean selected, Effect effect) {
 		for (Figure component : figure.getFigures()) {
 			// Si esta en el mapa entonces es una figura simple
@@ -296,12 +302,14 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
+	// Actualiza el estado de todos los checkboxes utilizando el metodo updateSingleCheckBox.
 	private void updateCheckBoxState() {
 		for (CheckBox checkBox : checkBoxEffectMap.keySet()) {
 			updateSingleCheckBox(checkBox);
 		}
 	}
 
+	//Actualiza el estado de un checkbox en particular en base a lo que devuelva el getStatus de todas las figuras seleccionadas.
 	private void updateSingleCheckBox(CheckBox checkBox) {
 		Status firstStatus = ((DrawableFigure) selectedFigures.get(0)).getStatus(checkBoxEffectMap.get(checkBox), figureEffectsMap);
 		for (Figure figure : selectedFigures) {
@@ -314,6 +322,7 @@ public class PaintPane extends BorderPane {
 		checkBox.setSelected(firstStatus == Status.SELECTED);
 	}
 
+	// Utilizando la interfaz funcional Consumer, este metodo ejecuta una accion sobre todas las figuras seleccionadas.
 	private void doToSelectedFigures(Consumer<Figure> f) {
 		if (!selectedFigures.isEmpty()) {
 			for (Figure figure : selectedFigures) {
@@ -324,6 +333,7 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
+	// Utiliza la interfaz Predicate para fijarse si una figura cumple con cierta condicion y en caso de ser asi, la agrega a addSelectedFigure.
 	private void printSelectionLabelIf(Predicate<Figure> predicate) {
 		boolean found = false;
 		StringBuilder label = new StringBuilder("Se seleccionó: ");

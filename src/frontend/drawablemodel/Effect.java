@@ -3,6 +3,7 @@ package frontend.drawablemodel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+//Enum para diferenciar y aplicar los efectos a las figuras.
 public enum Effect {
     SHADOW {
         @Override

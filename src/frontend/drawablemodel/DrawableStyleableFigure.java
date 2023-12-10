@@ -9,6 +9,8 @@ import java.util.SortedSet;
 
 public interface DrawableStyleableFigure extends DrawableFigure {
 
+
+    //Metodo que se encarga de aplicar los efectos a la figura y dibujarla.
     default void draw(GraphicsContext gc, Map<Figure, Color> colorMap, Map<Figure, SortedSet<Effect>> effectMap, boolean selectionBorder) {
         Color fillColor = colorMap.get(this);
         for(Effect effect : effectMap.get(this)) {

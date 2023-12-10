@@ -23,6 +23,8 @@ public class ImaginaryRectangle extends Rectangle implements DrawableFigure {
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
     }
 
+
+    //Se fija si la figura tiene el efecto o no.
     @Override
     public Status getStatus(Effect effect, Map<Figure, SortedSet<Effect>> effectMap) {
         return Status.UNSELECTED;
